@@ -63,7 +63,6 @@ To enable seamless navigation between routes, the `NavLink` component from `reac
 #### Example: Navigation Component
 
 ````jsx
-
 import { NavLink } from "react-router-dom";
 
 function PageNav() {
@@ -83,7 +82,6 @@ function PageNav() {
     </nav>
   );
 }
-```
 
 export default PageNav;
 ```
