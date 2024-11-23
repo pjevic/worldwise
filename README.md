@@ -9,7 +9,8 @@ This repository documents advanced React concepts I am learning from my favorite
 ## Table of Contents
 
 1. [Routing with React Router](#routing-with-react-router)
-2. [Tips & Tricks](#tips--tricks)
+2. [Adding Navigation with NavLink](#adding-navigation-with-navlink)
+3. [Tips & Tricks](#tips--tricks)
 
 ---
 
@@ -53,6 +54,47 @@ function App() {
 }
 ```
 
+---
+
+### Adding Navigation with `NavLink`
+
+To enable seamless navigation between routes, the `NavLink` component from `react-router-dom` is used. It allows you to define navigation links that automatically apply an active class when the link's destination matches the current URL.
+
+#### Example: Navigation Component
+
+````jsx
+
+import { NavLink } from "react-router-dom";
+
+function PageNav() {
+  return (
+    <nav>
+      <ul>
+        <li>
+          <NavLink to="/">Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/product">Product</NavLink>
+        </li>
+        <li>
+          <NavLink to="/pricing">Pricing</NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+
+export default PageNav;
+```
+
+#### Explanation
+
+1. **`NavLink`**: A specialized version of `Link` that provides styling for active links.
+2. **Dynamic Navigation**: Users can navigate between routes without a page reload, creating a seamless SPA experience.
+3. **Active Link Styling**: The `NavLink` component automatically applies an `active` class to the link that corresponds to the current route.
+
+---
+
 ## Tips & Tricks
 
 ### ⚡ Ensure Fallback Routes for 404 Handling
@@ -61,4 +103,4 @@ To improve user experience, always define a fallback route for unmatched paths. 
 
 ```jsx
 <Route path="*" element={<PageNotFound />} />
-```
+````
