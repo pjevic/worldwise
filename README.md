@@ -10,7 +10,8 @@ This repository documents advanced React concepts I am learning from my favorite
 
 1. [Routing with React Router](#routing-with-react-router)
 2. [Adding Navigation with NavLink](#adding-navigation-with-navlink)
-3. [Tips & Tricks](#tips--tricks)
+3. [Sidebar and PageNav Implementation](#sidebar-and-pagenav-implementation)
+4. [Tips & Tricks](#tips--tricks)
 
 ---
 
@@ -24,29 +25,31 @@ This repository documents advanced React concepts I am learning from my favorite
 - Handling dynamic navigation with path-based routing.
 - Managing route-specific components and layouts seamlessly.
 
----
-
 ### Key Concepts
 
 - **`BrowserRouter`**: Wraps the app to enable routing.
 - **`Routes`**: Contains all route definitions for the app.
 - **`Route`**: Maps a path to a specific component.
-- **Wildcard Routes**: Catch all unmatched paths with `*`.
-
----
+- **Nested Routes**: Define routes within routes to organize the application structure.
+- **Fallback Routes**: Catch all unmatched paths with `*`.
 
 ### Example: Routing in WorldWise
-
-#### App Component with Routes
 
 ```jsx
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        <Route index element={<Homepage />} />
         <Route path="product" element={<Product />} />
         <Route path="pricing" element={<Pricing />} />
+        <Route path="login" element={<Login />} />
+        <Route path="app" element={<AppLayout />}>
+          <Route index element={<p>List of cities</p>} />
+          <Route path="cities" element={<p>List of cities</p>} />
+          <Route path="countries" element={<p>List of countries</p>} />
+          <Route path="form" element={<p>FORM</p>} />
+        </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
@@ -56,27 +59,30 @@ function App() {
 
 ---
 
-### Adding Navigation with `NavLink`
+## Adding Navigation with NavLink
 
-To enable seamless navigation between routes, the `NavLink` component from `react-router-dom` is used. It allows you to define navigation links that automatically apply an active class when the link's destination matches the current URL.
+The `NavLink` component from `react-router-dom` provides navigation between routes with automatic active state styling for the currently active link.
 
-#### Example: Navigation Component
+### Example: Navigation with NavLink
 
-````jsx
+```jsx
 import { NavLink } from "react-router-dom";
 
 function PageNav() {
   return (
-    <nav>
+    <nav className={styles.nav}>
+      <Logo />
       <ul>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/pricing">Pricing</NavLink>
         </li>
         <li>
           <NavLink to="/product">Product</NavLink>
         </li>
         <li>
-          <NavLink to="/pricing">Pricing</NavLink>
+          <NavLink to="/login" className={styles.ctaLink}>
+            Login
+          </NavLink>
         </li>
       </ul>
     </nav>
@@ -86,20 +92,84 @@ function PageNav() {
 export default PageNav;
 ```
 
-#### Explanation
+### Key Features of NavLink
 
-1. **`NavLink`**: A specialized version of `Link` that provides styling for active links.
-2. **Dynamic Navigation**: Users can navigate between routes without a page reload, creating a seamless SPA experience.
-3. **Active Link Styling**: The `NavLink` component automatically applies an `active` class to the link that corresponds to the current route.
+1. **Active Link Styling**: `NavLink` automatically applies an `active` class to the currently active link.
+2. **Custom Styling**: Use the `className` or `style` prop to define custom styles for active and inactive links.
+3. **Dynamic Navigation**: Perfect for declarative navigation within React applications.
+
+---
+
+## Sidebar and PageNav Implementation
+
+The `Sidebar` and `PageNav` components enhance the application's structure and layout, ensuring intuitive navigation. They leverage React Router's `Outlet` for rendering nested routes.
+
+### Example: Sidebar Component
+
+```jsx
+function Sidebar() {
+  return (
+    <div className={styles.sidebar}>
+      <Logo />
+      <AppNav />
+      <Outlet />
+      <Footer />
+    </div>
+  );
+}
+```
+
+### Example: PageNav Component
+
+```jsx
+function PageNav() {
+  return (
+    <nav className={styles.nav}>
+      <Logo />
+      <ul>
+        <li>
+          <NavLink to="/pricing">Pricing</NavLink>
+        </li>
+        <li>
+          <NavLink to="/product">Product</NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" className={styles.ctaLink}>
+            Login
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+}
+```
+
+### Explanation
+
+- **Sidebar**: Acts as the main container for the app's navigation and content, utilizing `Outlet` to render nested routes dynamically.
+- **PageNav**: A top-level navigation bar offering quick links to primary routes, with active link styling.
 
 ---
 
 ## Tips & Tricks
 
-### ⚡ Ensure Fallback Routes for 404 Handling
+1. **Keep Components Small**: Break down your layout into reusable components like `Sidebar`, `PageNav`, and `Footer` for better maintainability.
+2. **Dynamic Styling**: Use CSS-in-JS libraries like `styled-components` or `emotion` for scoped and dynamic styling within components.
+3. **Error Boundaries**: Implement error boundaries around critical components to handle unexpected crashes gracefully.
+4. **Lazy Loading**: Use `React.lazy()` and `Suspense` to load components only when needed, improving performance.
 
-To improve user experience, always define a fallback route for unmatched paths. For example:
+### Example: Implementing Lazy Loading
 
 ```jsx
-<Route path="*" element={<PageNotFound />} />
-````
+import React, { Suspense, lazy } from "react";
+
+const Pricing = lazy(() => import("./Pricing"));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Pricing />
+    </Suspense>
+  );
+}
+```
