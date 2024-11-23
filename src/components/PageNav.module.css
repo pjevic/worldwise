@@ -1,0 +1,12 @@
+/** @format */
+
+.nav {
+  background-color: orange;
+}
+
+.nav ul {
+  list-style: none;
+
+  display: flex;
+  justify-content: space-between;
+}
