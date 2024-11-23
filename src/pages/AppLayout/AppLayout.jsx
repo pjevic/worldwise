@@ -1,6 +1,6 @@
 /** @format */
 
-import AppNav from "../components/AppNav";
+import AppNav from "../../components/AppNav/AppNav";
 
 function AppLayout() {
   return (

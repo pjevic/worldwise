@@ -1,7 +1,7 @@
 /** @format */
 import { NavLink } from "react-router-dom";
 
-import Logo from "./Logo";
+import Logo from "../Logo/Logo";
 
 import styles from "./PageNav.module.css";
 
