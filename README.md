@@ -9,9 +9,10 @@ This repository documents advanced React concepts I am learning from my favorite
 ## Table of Contents
 
 1. [Routing with React Router](#routing-with-react-router)
-2. [Adding Navigation with NavLink](#adding-navigation-with-navlink)
-3. [Sidebar and PageNav Implementation](#sidebar-and-pagenav-implementation)
-4. [Tips & Tricks](#tips--tricks)
+2. [Navigation with NavLink](#navigation-with-navlink)
+3. [Outlet Implementation](#outlet-implementation)
+4. [The URL For State Management](#the-url-for-state-management)
+5. [Tips & Tricks](#tips--tricks)
 
 ---
 
@@ -42,13 +43,9 @@ function App() {
       <Routes>
         <Route index element={<Homepage />} />
         <Route path="product" element={<Product />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="login" element={<Login />} />
         <Route path="app" element={<AppLayout />}>
           <Route index element={<p>List of cities</p>} />
           <Route path="cities" element={<p>List of cities</p>} />
-          <Route path="countries" element={<p>List of countries</p>} />
-          <Route path="form" element={<p>FORM</p>} />
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
@@ -59,9 +56,9 @@ function App() {
 
 ---
 
-## Adding Navigation with NavLink
+## Navigation with NavLink
 
-The `NavLink` component from `react-router-dom` provides navigation between routes with automatic active state styling for the currently active link.
+The `NavLink` component from `react-router-dom` provides navigation between routes with automatic **active** state styling for the currently active link.
 
 ### Example: Navigation with NavLink
 
@@ -79,17 +76,10 @@ function PageNav() {
         <li>
           <NavLink to="/product">Product</NavLink>
         </li>
-        <li>
-          <NavLink to="/login" className={styles.ctaLink}>
-            Login
-          </NavLink>
-        </li>
       </ul>
     </nav>
   );
 }
-
-export default PageNav;
 ```
 
 ### Key Features of NavLink
@@ -98,9 +88,15 @@ export default PageNav;
 2. **Custom Styling**: Use the `className` or `style` prop to define custom styles for active and inactive links.
 3. **Dynamic Navigation**: Perfect for declarative navigation within React applications.
 
+### The core difference between `<Link />` and `<NavLink />` in React:
+
+- **`<Link />`**: Used for basic navigation between routes without additional styling or behavior.
+
+- **`<NavLink />`**: Enhances `<Link />` by automatically applying styling or classes when the link matches the current route, indicating it is **active**.
+
 ---
 
-## Sidebar and PageNav Implementation
+## Outlet Implementation
 
 The `Sidebar` and `PageNav` components enhance the application's structure and layout, ensuring intuitive navigation. They leverage React Router's `Outlet` for rendering nested routes.
 
@@ -133,11 +129,6 @@ function PageNav() {
         <li>
           <NavLink to="/product">Product</NavLink>
         </li>
-        <li>
-          <NavLink to="/login" className={styles.ctaLink}>
-            Login
-          </NavLink>
-        </li>
       </ul>
     </nav>
   );
@@ -151,12 +142,40 @@ function PageNav() {
 
 ---
 
+## The URL For State Management
+
+- Easy to store state in **global place**, accessible to **all components** in the app
+- Good way to **"pass" data** from one page into next page
+- Makes it possible to **bookmark and share** the page with exact UI state it had at the time
+
+### Implementation of Dynamic Routes with URL Parameters
+
+1. Create a new route
+
+```jsx
+<Route path="cities/:id" element={<City />} />
+```
+
+2. Link to the route
+
+```jsx
+<li>
+  <Link to={`${id}`} className={styles.cityItem}>
+    <span className={styles.emoji}>{emoji}</span>
+    <h3 className={styles.name}>{cityName}</h3>
+  </Link>
+</li>
+```
+
+3. We read the data from the URL using `useParm` hook
+
+```jsx
+const { id } = useParams();
+```
+
 ## Tips & Tricks
 
-1. **Keep Components Small**: Break down your layout into reusable components like `Sidebar`, `PageNav`, and `Footer` for better maintainability.
-2. **Dynamic Styling**: Use CSS-in-JS libraries like `styled-components` or `emotion` for scoped and dynamic styling within components.
-3. **Error Boundaries**: Implement error boundaries around critical components to handle unexpected crashes gracefully.
-4. **Lazy Loading**: Use `React.lazy()` and `Suspense` to load components only when needed, improving performance.
+**Lazy Loading**: Use `React.lazy()` and `Suspense` to load components only when needed, improving performance.
 
 ### Example: Implementing Lazy Loading
 
