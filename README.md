@@ -12,7 +12,8 @@ This repository documents advanced React concepts I am learning from my favorite
 2. [Navigation with NavLink](#navigation-with-navlink)
 3. [Outlet Implementation](#outlet-implementation)
 4. [The URL For State Management](#the-url-for-state-management)
-5. [Tips & Tricks](#tips--tricks)
+5. [Programatic Navigation with `useNavigate`](#programatic-navigation-with-usenavigate)
+6. [Tips & Tricks](#tips--tricks)
 
 ---
 
@@ -156,7 +157,7 @@ function PageNav() {
 <Route path="cities/:id" element={<City />} />
 ```
 
-2. **_Link to the Route_**: Generate links dynamically using the route parameters and query strings.
+2. **Link to the Route**: Generate links dynamically using the route parameters and query strings.
 
 ```jsx
 <li>
@@ -170,7 +171,7 @@ function PageNav() {
 </li>
 ```
 
-3. **_Retrieve Data from the URL_**: Use React Router's useParams and useSearchParams hooks to extract the route parameters and query parameters.
+3. **Retrieve Data from the URL**: Use React Router's `useParams` and `useSearchParams` hooks to extract the route parameters and query parameters.
 
 ```jsx
 import { useParams, useSearchParams } from "react-router-dom";
@@ -183,7 +184,50 @@ const [searchParams, setSearchParams] = useSearchParams();
 
 - **Dynamic Routes**: The `:id` in the route acts as a variable and can be replaced with any specific value (e.g., city ID).
 - **Query Parameters**: The `lat` and `lng` values in the query string provide additional contextual information, which is especially useful for map-based apps or filtering.
-- **useParams and useSearchParams**: These hooks simplify accessing route and query parameters in your components.
+
+## Programatic Navigation with `useNavigate`
+
+```jsx
+export default function Map() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
+
+  return (
+    <div
+      className={styles.mapContainer}
+      onClick={() => {
+        navigate("form");
+      }}
+    >
+      <button
+        onClick={() => {
+          setSearchParams({ lat: 25, lng: 50 });
+        }}
+      >
+        Change Position
+      </button>
+    </div>
+  );
+}
+```
+
+### Difference between `<Link />` and `navigate`:
+
+- **`<Link />`**:
+
+  - Declarative navigation component used to create links between routes.
+  - Automatically handles navigation when the link is clicked.
+  - Renders an anchor (`<a>`) tag that updates the browser's URL and triggers a route change.
+  - Typically used in JSX to create navigable links in the UI.
+
+- **`navigate`**:
+  - Imperative function for programmatically navigating between routes.
+  - Can be called from anywhere in the component (like event handlers or functions).
+  - Useful for navigation based on logic or user actions that aren't tied to a visible link (e.g., button clicks, form submissions).
+  - Provides more control over navigation, allowing for redirection, back/forward actions, or path-based navigation.
 
 ## Tips & Tricks
 
@@ -204,3 +248,40 @@ function App() {
   );
 }
 ```
+
+### Key Points:
+
+- **React.lazy**: Dynamically imports the component.
+- **Suspense**: Displays a fallback UI (e.g., a loading spinner) while the component is being loaded.
+
+### Button Type
+
+```jsx
+export default function Button({ children, onClick, type }) {
+  return (
+    <button className={`${styles.btn} ${styles[type]}`} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+```
+
+### Move Back or Forward with `navigate`
+
+```jsx
+<Button
+  type="back"
+  onClick={(e) => {
+    e.preventDefault();
+    navigate(-1);
+  }}
+>
+  &larr; Back
+</Button>
+```
+
+### Key Points:
+
+- **navigate(-1)**: Moves one step back in the browser history.
+- **navigate(+1)**: Moves one step forward.
+- **Dynamic Navigation**: Use `navigate("/path")` to programmatically redirect to a specific route.
