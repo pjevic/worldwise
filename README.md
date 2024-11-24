@@ -12,7 +12,7 @@ This repository documents advanced React concepts I am learning from my favorite
 2. [Navigation with NavLink](#navigation-with-navlink)
 3. [Outlet Implementation](#outlet-implementation)
 4. [The URL For State Management](#the-url-for-state-management)
-5. [Programatic Navigation with `useNavigate`](#programatic-navigation-with-usenavigate)
+5. [Programmatic Navigation with `useNavigate` and `<Navigate />`](#programmatic-navigation-with-usenavigate-and-navigate-)
 6. [Tips & Tricks](#tips--tricks)
 
 ---
@@ -185,7 +185,7 @@ const [searchParams, setSearchParams] = useSearchParams();
 - **Dynamic Routes**: The `:id` in the route acts as a variable and can be replaced with any specific value (e.g., city ID).
 - **Query Parameters**: The `lat` and `lng` values in the query string provide additional contextual information, which is especially useful for map-based apps or filtering.
 
-## Programatic Navigation with `useNavigate`
+## Programmatic Navigation with `useNavigate` and `<Navigate />`
 
 ```jsx
 export default function Map() {
@@ -214,20 +214,40 @@ export default function Map() {
 }
 ```
 
-### Difference between `<Link />` and `navigate`:
+```jsx
+<Route path="app" element={<AppLayout />}>
+  <Route index element={<Navigate to="cities" replace />} />
+  <Route path="cities" element={<CityList cities={cities} isLoading={isLoading} />} />
+  <Route path="cities/:id" element={<City />} />
+</Route>
+```
+
+### Difference between `<Link />`, `navigate`, and `<Navigate />`:
 
 - **`<Link />`**:
 
-  - Declarative navigation component used to create links between routes.
-  - Automatically handles navigation when the link is clicked.
-  - Renders an anchor (`<a>`) tag that updates the browser's URL and triggers a route change.
-  - Typically used in JSX to create navigable links in the UI.
+  - A declarative navigation component used to create links between routes.
+  - Automatically triggers navigation when the link is clicked.
+  - Renders an anchor (`<a>`) tag that updates the browser's URL and initiates a route change.
+  - Ideal for creating navigable links in the UI, commonly used in JSX.
 
 - **`navigate`**:
-  - Imperative function for programmatically navigating between routes.
-  - Can be called from anywhere in the component (like event handlers or functions).
-  - Useful for navigation based on logic or user actions that aren't tied to a visible link (e.g., button clicks, form submissions).
-  - Provides more control over navigation, allowing for redirection, back/forward actions, or path-based navigation.
+
+  - An imperative function used for programmatically navigating between routes.
+  - Can be invoked from anywhere in the component, including event handlers or other functions.
+  - Ideal for scenarios where navigation needs to occur based on specific logic or user actions (e.g., button clicks, form submissions).
+  - Offers greater control over navigation, such as redirecting, going back/forward in history, or navigating to a specific path.
+
+- **`<Navigate />`**:
+  - A component used to programmatically redirect the user to a different route.
+  - Renders and immediately triggers a navigation to the specified path when it is mounted.
+  - Typically used for automatic redirection, such as after form submissions or authentication checks.
+  - Can replace the `navigate` function for simpler, more declarative redirections.
+
+#### `replace` Keyword:
+
+- When `replace={true}` is passed to `<Navigate />`, it prevents the current entry in the history stack from being added, essentially replacing the current route.
+- This is useful when you want to redirect without leaving a history entry, which means the user cannot use the browser's "back" button to return to the previous page.
 
 ## Tips & Tricks
 
