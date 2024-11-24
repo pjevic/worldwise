@@ -142,36 +142,48 @@ function PageNav() {
 
 ---
 
-## The URL For State Management
+## The URL for State Management
 
-- Easy to store state in **global place**, accessible to **all components** in the app
-- Good way to **"pass" data** from one page into next page
-- Makes it possible to **bookmark and share** the page with exact UI state it had at the time
+- The URL is an **easy-to-use global storage** for state, accessible by all components in the app.
+- It provides a **simple way to pass data** from one page to the next using query parameters.
+- Enables users to **bookmark and share** the exact UI state of the page at a specific moment.
 
 ### Implementation of Dynamic Routes with URL Parameters
 
-1. Create a new route
+1. **Create a Route**: Define a dynamic route in your `Routes` configuration. The `:id` is a placeholder for dynamic segments.
 
 ```jsx
 <Route path="cities/:id" element={<City />} />
 ```
 
-2. Link to the route
+2. **_Link to the Route_**: Generate links dynamically using the route parameters and query strings.
 
 ```jsx
 <li>
-  <Link to={`${id}`} className={styles.cityItem}>
+  <Link
+    to={`${id}?lat=${position.lat}&lng=${position.lng}`}
+    className={styles.cityItem}
+  >
     <span className={styles.emoji}>{emoji}</span>
     <h3 className={styles.name}>{cityName}</h3>
   </Link>
 </li>
 ```
 
-3. We read the data from the URL using `useParm` hook
+3. **_Retrieve Data from the URL_**: Use React Router's useParams and useSearchParams hooks to extract the route parameters and query parameters.
 
 ```jsx
+import { useParams, useSearchParams } from "react-router-dom";
+
 const { id } = useParams();
+const [searchParams, setSearchParams] = useSearchParams();
 ```
+
+#### Notes
+
+- **Dynamic Routes**: The `:id` in the route acts as a variable and can be replaced with any specific value (e.g., city ID).
+- **Query Parameters**: The `lat` and `lng` values in the query string provide additional contextual information, which is especially useful for map-based apps or filtering.
+- **useParams and useSearchParams**: These hooks simplify accessing route and query parameters in your components.
 
 ## Tips & Tricks
 
