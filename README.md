@@ -13,7 +13,8 @@ This repository documents advanced React concepts I am learning from my favorite
 3. [Outlet Implementation](#outlet-implementation)
 4. [The URL For State Management](#the-url-for-state-management)
 5. [Programmatic Navigation with `useNavigate` and `<Navigate />`](#programmatic-navigation-with-usenavigate-and-navigate-)
-6. [Tips & Tricks](#tips--tricks)
+6. [Custom Provider and Custom Hook](#custom-provider-and-custom-hook)
+7. [Tips & Tricks](#tips--tricks)
 
 ---
 
@@ -248,6 +249,54 @@ export default function Map() {
 
 - When `replace={true}` is passed to `<Navigate />`, it prevents the current entry in the history stack from being added, essentially replacing the current route.
 - This is useful when you want to redirect without leaving a history entry, which means the user cannot use the browser's "back" button to return to the previous page.
+
+## Custom Provider and Custom Hook
+
+A custom provider allows you to share data and logic across components, while a custom hook simplifies the usage of that context.
+
+### Custom Provider
+
+The custom provider component wraps your app and makes state or logic available to all its descendants.
+
+#### Creating a Custom Provider
+
+```jsx
+import { createContext, useState } from "react";
+
+// 1. Create a Context
+const CitiesContext = createContext();
+
+// 2. Create a custom provider component
+function CitiesProvider({ children }) {
+  const [cities, setCities] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  return (
+    <CitiesContext.Provider
+      value={{
+        cities,
+        isLoading,
+      }}
+    >
+      {children}
+    </CitiesContext.Provider>
+  );
+}
+```
+
+#### Creating a Custom Hook
+
+```jsx
+import { useContext } from "react";
+
+// Create a custom hook to access context
+function useCities() {
+  const context = useContext(CitiesContext);
+  if (context === undefined)
+    throw new Error("CitiesContext was used outside the CitiesProvider");
+  return context;
+}
+```
 
 ## Tips & Tricks
 
