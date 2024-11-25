@@ -1,24 +1,41 @@
 /** @format */
 
-import { useParams, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
+import { useCities } from "../../contexts/CitiesContext";
+
+import Spinner from "../Spinner/Spinner";
+import Button from "../Button/Button";
+import BackButton from "../Button/BackButton/BackButton";
 
 import styles from "./City.module.css";
 
+const formatDate = (date) =>
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    weekday: "long",
+  }).format(new Date(date));
+
 function City() {
   const { id } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const lat = searchParams.get("lat");
-  const lng = searchParams.get("lng");
+  const { getCity, currentCity, isLoading } = useCities();
+  const { cityName, emoji, date, notes } = currentCity;
 
-  // const { cityName, emoji, date, notes } = currentCity;
+  useEffect(
+    function () {
+      getCity(id);
+    },
+    [id]
+  );
+
+  if (isLoading) return <Spinner />;
 
   return (
-    <div onClick={setSearchParams} className={styles.city}>
-      <h1>{id}</h1>
-      <p>
-        Position lat {lat}, lng {lng}
-      </p>
-      {/* <div className={styles.row}>
+    <div className={styles.city}>
+      <div className={styles.row}>
         <h6>City name</h6>
         <h3>
           <span>{emoji}</span> {cityName}
@@ -47,8 +64,9 @@ function City() {
           Check out {cityName} on Wikipedia &rarr;
         </a>
       </div>
-
-      <div></div> */}
+      <div>
+        <BackButton />
+      </div>
     </div>
   );
 }
