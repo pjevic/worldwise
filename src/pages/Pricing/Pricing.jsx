@@ -3,7 +3,7 @@
 // Uses the same styles as Product
 import PageNav from "../../components/PageNav/PageNav";
 
-import styles from "../../components/PageNav/PageNav.module.css";
+import styles from "../../pages/Product/Product.module.css";
 
 export default function Product() {
   return (
