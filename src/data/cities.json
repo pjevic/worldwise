@@ -11,66 +11,6 @@
         "lng": "-5.628569899683665"
       },
       "id": 1
-    },
-    {
-      "cityName": "Cabanes",
-      "country": "Spain",
-      "emoji": "🇪🇸",
-      "date": "2024-11-26T22:21:03.961Z",
-      "notes": "",
-      "position": {
-        "lat": "40.11318003087604",
-        "lng": "0.10780815880957474"
-      },
-      "id": 2
-    },
-    {
-      "cityName": "Kikinda",
-      "country": "Serbia",
-      "emoji": "🇷🇸",
-      "date": "2024-11-27T14:21:36.309Z",
-      "notes": "",
-      "position": {
-        "lat": "45.860797950873405",
-        "lng": "20.366707717802132"
-      },
-      "id": 3
-    },
-    {
-      "cityName": "Novi Sad",
-      "country": "Serbia",
-      "emoji": "🇷🇸",
-      "date": "2024-11-27T14:21:42.346Z",
-      "notes": "",
-      "position": {
-        "lat": "45.245546428183175",
-        "lng": "20.081144285941097"
-      },
-      "id": 4
-    },
-    {
-      "cityName": "Belgrade",
-      "country": "Serbia",
-      "emoji": "🇷🇸",
-      "date": "2024-11-27T14:21:48.865Z",
-      "notes": "",
-      "position": {
-        "lat": "44.83068436744398",
-        "lng": "20.39877119484868"
-      },
-      "id": 5
-    },
-    {
-      "cityName": "Marseille",
-      "country": "France",
-      "emoji": "🇫🇷",
-      "date": "2024-11-30T12:44:09.726Z",
-      "notes": "",
-      "position": {
-        "lat": "43.29960488679314",
-        "lng": "5.387740355696789"
-      },
-      "id": 6
     }
   ]
 }
