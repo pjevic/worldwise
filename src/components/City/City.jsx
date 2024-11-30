@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import { useCities } from "../../contexts/CitiesContext";
 
 import Spinner from "../Spinner/Spinner";
-import Button from "../Button/Button";
 import BackButton from "../Button/BackButton/BackButton";
 
 import styles from "./City.module.css";
@@ -28,7 +27,7 @@ function City() {
     function () {
       getCity(id);
     },
-    [id]
+    [id, getCity]
   );
 
   if (isLoading) return <Spinner />;
@@ -72,11 +71,3 @@ function City() {
 }
 
 export default City;
-
-// TEMP DATA
-// const currentCity = {
-//   cityName: "Lisbon",
-//   emoji: "🇵🇹",
-//   date: "2027-10-31T15:59:59.138Z",
-//   notes: "My favorite city so far!",
-// };
