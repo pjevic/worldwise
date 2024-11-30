@@ -298,6 +298,30 @@ function useCities() {
 }
 ```
 
+## Dependency Array Rules
+
+- Every **state variable**, **prop**, and **context value** used inside the effect **MUST** be included in the dependency array.
+- Include all **reactive values**—any function or variable that references **any other** reactive value—to avoid "stale closures."
+- Do **NOT** use **objects** or **arrays** directly as dependencies (objects and arrays are recreated on each render, and React treats new instances as different).
+
+### Removing Unnecessary Dependencies
+
+#### Removing Function Dependencies
+
+- Move the function **inside the effect** if it’s only needed there.
+- If the function is used in multiple places, **memoize it** using `useCallback`.
+- If the function does not reference any reactive values, move it **outside the component**.
+
+#### Removing Object Dependencies
+
+- Instead of including the entire object, include **only the specific properties you need** (primitive values).
+- If that’s not feasible, apply the same strategies as with functions: **move** or **memoize** the object.
+
+#### Other Strategies
+
+- For **multiple related reactive values**, consider using a reducer with `useReducer` to manage them collectively.
+- You do not need to include `setState` (from `useState`) or `dispatch` (from `useReducer`) in the dependencies, as React guarantees their stability across renders.
+
 ## Tips & Tricks
 
 **Lazy Loading**: Use `React.lazy()` and `Suspense` to load components only when needed, improving performance.
